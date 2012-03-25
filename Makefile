@@ -10,7 +10,7 @@ export MAX_UBOOT_SIZE=130048 #size 0x1fc00
 
 all: decompress_toolchain uboot
 	@echo tuboot.bin size: `wc -c < $(BUILD_TOPDIR)/bin/tuboot.bin`
-	if [ "`wc -c < $(BUILD_TOPDIR)/bin/tuboot.bin`" -gt "$(MAX_UBOOT_SIZE)" ]; then \
+	@if [ "`wc -c < $(BUILD_TOPDIR)/bin/tuboot.bin`" -gt "$(MAX_UBOOT_SIZE)" ]; then \
 			echo "####################ERROR####################" \
             echo "tuboot.bin image size more than $(MAX_UBOOT_SIZE)"; \
     fi;
