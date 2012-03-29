@@ -6,7 +6,7 @@ export STAGING_DIR=$(BUILD_TOPDIR)/tmp
 export FLASH_SIZE=4
 export COMPRESSED_UBOOT=1
 export MAX_UBOOT_SIZE=130048 #size 0x1fc00
-
+export CONFIG_HORNET_1_1_WAR=1
 
 all: decompress_toolchain uboot
 	@echo tuboot.bin size: `wc -c < $(BUILD_TOPDIR)/bin/tuboot.bin`
