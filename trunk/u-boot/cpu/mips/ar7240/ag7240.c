@@ -507,6 +507,8 @@ int ag7240_enet_initialize(bd_t * bis)
 
     printf("ag7240_enet_initialize...\n");
 
+    ar7240_reg_wr(HORNET_BOOTSTRAP_STATUS, ar7240_reg_rd(HORNET_BOOTSTRAP_STATUS) & ~HORNET_BOOTSTRAP_MDIO_SLAVE_MASK);
+
     if(is_ar933x() ) {
         u32 rd = 0x0;
 
