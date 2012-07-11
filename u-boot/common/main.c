@@ -420,6 +420,15 @@ void main_loop (void)
 		s = getenv ("bootcmd");
 
 //	debug ("### main_loop: bootcmd=\"%s\"\n", s ? s : "<UNDEFINED>");
+# ifdef CONFIG_CMD_HTTPD
+		if (ar7240_is_rst_button_pushed())
+		{
+			//give more time do the phy link,different phy may need different time,
+			//so here give a more long time let most of the people work ok...if you are
+			//a busy a man and don't want to wait,you can reduce this vaule !!!
+			bootdelay = 5;
+		}
+# endif
 
 	if (bootdelay >= 0 && s && !abortboot (bootdelay)) {
 # ifdef CONFIG_AUTOBOOT_KEYED
