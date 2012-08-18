@@ -2217,10 +2217,18 @@ endif
 endif
 endif
 
-#add by zlp, 2011.10.31. MR11U 1.0 CPU=300Mhz.
+ifdef PRODUCTOR_CPU_350
+	@echo "#define PRODUCTOR_CPU 350" >>include/config.h
+endif    
 ifdef PRODUCTOR_CPU_300
-	@echo "#define PRODUCTOR_CPU_300 1" >>include/config.h
-endif	
+	@echo "#define PRODUCTOR_CPU 300" >>include/config.h
+endif    
+ifdef PRODUCTOR_CPU_200
+	@echo "#define PRODUCTOR_CPU 200" >>include/config.h
+endif    
+ifdef PRODUCTOR_CPU_100
+	@echo "#define PRODUCTOR_CPU 100" >>include/config.h
+endif
 
 ifeq ($(CONFIG_HORNET_XTAL), 40)
 	@echo "#define CONFIG_40MHZ_XTAL_SUPPORT 1" >>include/config.h

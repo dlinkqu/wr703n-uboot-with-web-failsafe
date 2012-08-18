@@ -263,10 +263,14 @@ pmu_loop2_end:
     nop
 #endif
 
+	/* max AHB Master wait time out ... */
+    set_reg(0xb800009c, 0xfffff)
+	nop
+
 /* set PLL bypass(Bit 2), CPU_POST_DIV, DDR_POST_DIV, AHB_POST_DIV in CPU clock control */
     set_reg(AR7240_CPU_CLOCK_CONTROL, 0x00018004)
-    nop
-
+	nop
+	
 /* set SETTLE_TIME in CPU PLL */
     set_reg(AR7240_USB_PLL_CONFIG, CPU_PLL_SETTLE_TIME_VAL)
     nop
