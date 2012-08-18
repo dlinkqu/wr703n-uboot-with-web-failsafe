@@ -101,11 +101,17 @@
     #define CFG_PLL_FREQ	CFG_PLL_80_80_40
     #endif
 #else
-	#ifdef PRODUCTOR_CPU_300
-	#define CFG_PLL_FREQ	CFG_PLL_300_300_150
-	#else
-	#define CFG_PLL_FREQ	CFG_PLL_400_400_200
-	#endif
+    #if (PRODUCTOR_CPU == 350)
+    #define CFG_PLL_FREQ    CFG_PLL_350_350_175
+    #elif (PRODUCTOR_CPU == 300)
+    #define CFG_PLL_FREQ    CFG_PLL_300_300_150
+    #elif (PRODUCTOR_CPU == 200)
+    #define CFG_PLL_FREQ    CFG_PLL_200_200_100
+    #elif (PRODUCTOR_CPU == 100)
+    #define CFG_PLL_FREQ    CFG_PLL_100_100_50
+     #else
+     #define CFG_PLL_FREQ    CFG_PLL_400_400_200
+     #endif
 #endif
 
 
@@ -127,6 +133,12 @@
 
 #if (CFG_PLL_FREQ == CFG_PLL_200_200_100)
 #	define CFG_HZ          (200000000/2)
+        #define CPU_PLL_CONFIG_VAL1 0x40814000
+        #define CPU_PLL_CONFIG_VAL2 0x00814000
+#elif (CFG_PLL_FREQ == CFG_PLL_100_100_50)
+#    define CFG_HZ          (100000000/2)
+        #define CPU_PLL_CONFIG_VAL1 0x40812000
+        #define CPU_PLL_CONFIG_VAL2 0x00812000
 #elif (CFG_PLL_FREQ == CFG_PLL_300_300_150)
 #	define CFG_HZ          (300000000/2)
     #if CONFIG_40MHZ_XTAL_SUPPORT
@@ -231,7 +243,19 @@
 #if CONFIG_40MHZ_XTAL_SUPPORT
 #define CFG_DDR_REFRESH_VAL     0x4270
 #else
-#define CFG_DDR_REFRESH_VAL     0x4186
+	//need tune this? ...it's only related to XTAL?or also related to the PLL?
+	#if (CFG_PLL_FREQ == CFG_PLL_400_400_200)
+	#define CFG_DDR_REFRESH_VAL     0x4186
+	#elif (CFG_PLL_FREQ == CFG_PLL_350_350_175)
+	//#define CFG_DDR_REFRESH_VAL     0x414a
+	#define CFG_DDR_REFRESH_VAL     0x4130
+	#elif (CFG_PLL_FREQ == CFG_PLL_300_300_150)
+	//#define CFG_DDR_REFRESH_VAL     0x4118
+	#define CFG_DDR_REFRESH_VAL     0x4100
+	//#define CFG_DDR_REFRESH_VAL     0x40c8
+	#else
+	#error PLLNOTSUPPORT
+	#endif
 #endif
 #define CFG_DDR_CONFIG_VAL      0x7fbc8cd0
 #define CFG_DDR_MODE_VAL_INIT   0x133
