@@ -11,7 +11,7 @@ export NEW_DDR_TAP_CAL=1
 
 #not export any PRODUCTOR_CPU_*,will run 400_400_200.
 #export PRODUCTOR_CPU_350=1
-#export PRODUCTOR_CPU_300=1
+export PRODUCTOR_CPU_300=1
 
 all: decompress_toolchain uboot
 	@echo tuboot.bin size: `wc -c < $(BUILD_TOPDIR)/bin/tuboot.bin`
@@ -29,7 +29,8 @@ uboot:
 	cd $(BUILD_TOPDIR)/u-boot/ && $(MAKECMD) tl-wr703n_config
 	cd $(BUILD_TOPDIR)/u-boot/ && $(MAKECMD) ENDIANNESS=-EB V=1 all
 	cp $(BUILD_TOPDIR)/u-boot/tuboot.bin $(BUILD_TOPDIR)/bin
-
+	$(BUILD_TOPDIR)/u-boot/tools/mkhttpdimage -d $(BUILD_TOPDIR)/bin/tuboot.bin $(BUILD_TOPDIR)/bin/tlr.bin
+	cat $(BUILD_TOPDIR)/bin/tuboot.bin $(BUILD_TOPDIR)/bin/tlr.bin >$(BUILD_TOPDIR)/bin/wr703n_uboot_with_tlr.bin
 
 clean:
 	cd $(BUILD_TOPDIR)/u-boot/ && $(MAKECMD) clean

@@ -155,5 +155,12 @@ typedef struct image_header {
 	uint8_t		ih_name[IH_NMLEN];	/* Image Name		*/
 } image_header_t;
 
+//in memory of today ...
+#define IT_MAGIC	0x20120819
 
+typedef struct image_trailer{
+	uint32_t	it_size;
+	uint32_t	it_dcrc;
+	uint32_t	it_magic;
+} image_trailer_t;
 #endif	/* __IMAGE_H__ */

@@ -59,12 +59,22 @@ HttpdStart (void)
 #if defined(CONFIG_CMD_HTTPD)
 int do_http_upgrade(const unsigned char *data, const ulong size)
 {
-	char buf[128];
+	char buf[256];
 
 	if(getenv ("ram_addr") == NULL)
 		return -1;
 	if(getenv ("kernel_addr") == NULL)
 		return -1;
+
+	//here we upgrade the u-boot,we will keep it less than 64k ...
+	if(size < 65536)
+	{
+		puts("u-boot upgrade\n");
+		sprintf(buf, "era 0x9f000000 +0x%lx; cp.b ${ram_addr} 0x9f000000 0x%lx", 0x10000, 0x10000);
+		printf("run cmd:%s\n", buf);
+		return run_command(buf, 0);
+	}
+
 #if 0
 	/* check the image */
 	if(run_command("imi ${ram_addr}", 0) < 0) {

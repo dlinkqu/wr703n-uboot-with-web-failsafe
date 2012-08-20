@@ -21,9 +21,9 @@
 # MA 02111-1307 USA
 #
 
-BINS	= img2srec$(SFX) mkimage$(SFX) envcrc$(SFX) gen_eth_addr$(SFX) bmp_logo$(SFX)
+BINS	= img2srec$(SFX) mkimage$(SFX) mkhttpdimage$(SFX) envcrc$(SFX) gen_eth_addr$(SFX) bmp_logo$(SFX)
 
-OBJS	= environment.o img2srec.o mkimage.o crc32.o envcrc.o gen_eth_addr.o bmp_logo.o
+OBJS	= environment.o img2srec.o mkimage.o mkhttpdimage.o crc32.o envcrc.o gen_eth_addr.o bmp_logo.o
 
 ifeq ($(ARCH),mips)
 BINS   += inca-swap-bytes$(SFX)
@@ -129,6 +129,10 @@ mkimage$(SFX):	mkimage.o crc32.o
 		$(CC) $(CFLAGS) $(HOST_LDFLAGS) -o $@ $^
 		$(STRIP) $@
 
+mkhttpdimage$(SFX): mkhttpdimage.o crc32.o
+		$(CC) $(CFLAGS) $(HOST_LDFLAGS) -o $@ $^
+		$(STRIP) $@
+
 ncb$(SFX):	ncb.o
 		$(CC) $(CFLAGS) $(HOST_LDFLAGS) -o $@ $^
 		$(STRIP) $@
@@ -156,6 +160,9 @@ crc32.o:	crc32.c
 		$(CC) -g $(CFLAGS) -c $<
 
 mkimage.o:	mkimage.c
+		$(CC) -g $(CFLAGS) -c $<
+
+mkhttpdimage.o:	mkhttpdimage.c
 		$(CC) -g $(CFLAGS) -c $<
 
 ncb.o:		ncb.c
