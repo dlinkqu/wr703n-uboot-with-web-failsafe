@@ -11,7 +11,7 @@ export NEW_DDR_TAP_CAL=1
 
 #not export any PRODUCTOR_CPU_*,will run 400_400_200.
 #export PRODUCTOR_CPU_350=1
-export PRODUCTOR_CPU_300=1
+#export PRODUCTOR_CPU_300=1
 
 all: decompress_toolchain uboot
 	@echo tuboot.bin size: `wc -c < $(BUILD_TOPDIR)/bin/tuboot.bin`
