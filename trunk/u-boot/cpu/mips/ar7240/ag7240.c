@@ -522,7 +522,12 @@ int ag7240_enet_initialize(bd_t * bis)
         ar7240_reg_wr(AR7240_S26_CLK_CTRL_OFFSET, rd);
 
         if(ar7240_reg_rd(AR7240_RESET)!=0)
-            ar7240_reg_wr(AR7240_RESET,0);
+	{
+		ar7240_reg_wr(AR7240_RESET,0);
+		printf("blah blah blah ...\n");
+		printf("blah blah blah ...\n");
+		printf("blah blah blah ...\n");
+	}
     }
 
     for (i = 0;i < CFG_AG7240_NMACS;i++) {
