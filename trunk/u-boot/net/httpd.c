@@ -7,6 +7,7 @@
 #include <common.h>
 #include <command.h>
 #include <net.h>
+#include <asm/byteorder.h>
 
 #if defined(CONFIG_CMD_HTTPD)
 #include <httpd.h>
@@ -16,6 +17,7 @@
 #include "uip-0.9/uip.h"
 #include "uip-0.9/uip_arp.h"
 
+#include <image.h>
 
 #if defined(CONFIG_CMD_HTTPD)
 
@@ -60,16 +62,42 @@ HttpdStart (void)
 int do_http_upgrade(const unsigned char *data, const ulong size)
 {
 	char buf[256];
+	image_trailer_t trailer;
+	ulong len, checksum;
 
+	printf("data:0x%x,size:%d,0x%x\n", data, size, size);
 	if(getenv ("ram_addr") == NULL)
 		return -1;
 	if(getenv ("kernel_addr") == NULL)
 		return -1;
 
 	//here we upgrade the u-boot,we will keep it less than 64k ...
+	//we need implement more check for u-boot,the more the better ...
 	if(size < 65536)
 	{
 		puts("u-boot upgrade\n");
+		len = size -sizeof(image_trailer_t);
+		printf("len:%d\n", len);
+		//copy it to a local variable instead use (image_trailer_t *) pointer operate it directly,
+		//so no align issue ...
+		memcpy(&trailer, (unsigned char *)(data + len), sizeof(image_trailer_t));
+		printf("trailer addr:0x%x\n", &trailer);
+		if (ntohl(trailer.it_magic) != IT_MAGIC)
+		{
+			puts("u-boot bad magic\n");
+			return -1;
+		}
+		if (ntohl(trailer.it_size) != len)
+		{
+			puts("u-boot length error\n");
+			return -1;
+		}
+		checksum = crc32 (0, (uchar *)data, len);
+		if (ntohl(trailer.it_dcrc) != checksum)
+		{
+			puts("u-boot crc error\n");
+			return -1;
+		}
 		sprintf(buf, "era 0x9f000000 +0x%lx; cp.b ${ram_addr} 0x9f000000 0x%lx", 0x10000, 0x10000);
 		printf("run cmd:%s\n", buf);
 		return run_command(buf, 0);
