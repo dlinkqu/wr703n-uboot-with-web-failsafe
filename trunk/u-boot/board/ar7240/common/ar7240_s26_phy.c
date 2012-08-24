@@ -860,6 +860,7 @@ unsigned int s26_rd_phy(unsigned int phy_addr, unsigned int reg_addr)
 {
 
          unsigned int rddata;
+	 unsigned int i = 0;
 
         // MDIO_CMD is set for read
 
@@ -872,6 +873,12 @@ unsigned int s26_rd_phy(unsigned int phy_addr, unsigned int reg_addr)
 
         // Check MDIO_BUSY status
         while(rddata){
+	i++;
+	if(i > 824)
+	{
+		printf("MDIO_BUSY!!!\n");
+		break;
+	}
         rddata = athrs26_reg_read(0x98);
         rddata = rddata & (1<<31);
         }
