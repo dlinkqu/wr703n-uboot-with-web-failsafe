@@ -145,8 +145,8 @@
         #define CPU_PLL_CONFIG_VAL1 0x40813C00
         #define CPU_PLL_CONFIG_VAL2 0x00813C00    
     #else
-        #define CPU_PLL_CONFIG_VAL1 0x40816000
-        #define CPU_PLL_CONFIG_VAL2 0x00816000
+        #define CPU_PLL_CONFIG_VAL1 0x40a16000
+        #define CPU_PLL_CONFIG_VAL2 0x00a16000
     #endif
 #elif (CFG_PLL_FREQ == CFG_PLL_350_350_175)
 #	define CFG_HZ          (350000000/2)
